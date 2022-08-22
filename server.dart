@@ -11,15 +11,14 @@ void  main() async
     server.listen((HttpRequest req) async
     {
         print('Connection requested');
-        print(req);
-
+        print(req.uri);
         if (req.uri.path == '/ws')
         {
             var socket = await WebSocketTransformer.upgrade(req);
             print('Connection upgraded to WebSocket');
             socket.listen((client) 
             {
-                //handleConnection(client);
+                //handleConnections(client);
                 print(client);
             });
         }
@@ -31,8 +30,13 @@ void  main() async
 }
 
 
+void handleConnection(String client)
+{
+    print(client);
+}
 
-void handleConnection(Socket client)
+
+void handleConnections(Socket client)
 {
     print('Connection from ${client.remoteAddress.address}:${client.remotePort}');
 
