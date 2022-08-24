@@ -18,8 +18,32 @@ void  main() async
             print('Connection upgraded to WebSocket');
             socket.listen((client) 
             {
-                //handleConnections(client);
-                print(client);
+                bool error = false;
+                while (error == false)
+                {
+                    //move socket listen inside while loop
+                    String data = client;
+                    print(data);
+
+                    if (data.length >= 10)
+                    {
+                        if (data.substring(0, 9) == "username: ")
+                        {
+                            String username = data.substring(10);
+                            print('Username "${username}" received.');
+                        }
+                    }
+
+                    if (data.length >= 9)
+                    {
+                        if (data.substring(0, 8) == "version: ")
+                        {
+                            String version = data.substring(9);
+                        }
+                    }
+
+
+                }
             });
         }
     });
