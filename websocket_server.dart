@@ -15,36 +15,38 @@ void  main() async
         if (req.uri.path == '/ws')
         {
             var socket = await WebSocketTransformer.upgrade(req);
-            print('Connection upgraded to WebSocket');
-            socket.listen((client) 
+
+            String version = "";
+            String username = "";
+            String user_address = "";
+            //String user_address = req.headers;
+            //print(user_address);
+
+            socket.listen((client) async
             {
-                bool error = false;
-                while (error == false)
+                print(client);
+
+                if (client.length >= 9)
                 {
-                    //move socket listen inside while loop
-                    String data = client;
-                    print(data);
-
-                    if (data.length >= 10)
+                    if (client.substring(0, 8) == "version: ")
                     {
-                        if (data.substring(0, 9) == "username: ")
-                        {
-                            String username = data.substring(10);
-                            print('Username "${username}" received.');
-                        }
+                        String version = client.substring(9);
                     }
-
-                    if (data.length >= 9)
-                    {
-                        if (data.substring(0, 8) == "version: ")
-                        {
-                            String version = data.substring(9);
-                        }
-                    }
-
-
                 }
+
+                if (client.length >= 10)
+                {
+                    if (client.substring(0, 9) == "username: ")
+                    {
+                        String username = client.substring(10);
+                        print('User "${username}" joined from ${user_address} version ${version}');
+                        socket.add("Data received, user '${username}' at ${user_address}");
+                    }
+                }
+
+                    
             });
+
         }
     });
 
@@ -52,6 +54,17 @@ void  main() async
 
     
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 void handleConnection(String client)
