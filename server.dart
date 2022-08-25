@@ -8,6 +8,7 @@ List<dynamic> data_array = [[]];
 void main() async
 {
     data_array[0] = ["server", "Chatroom initiated"];
+
     // bind the socket server to an address and port
     final server = await ServerSocket.bind(InternetAddress.anyIPv4, port);
 
@@ -24,7 +25,7 @@ void handleConnection(Socket client)
     String username = "";
 
 
-    print('Connection from ${client.remoteAddress.address}:${client.remotePort}');
+    stdout.writeln('Connection from ${client.remoteAddress.address}:${client.remotePort}');
 
     // listen for events from the client
     client.listen(
@@ -36,7 +37,7 @@ void handleConnection(Socket client)
         final message = String.fromCharCodes(data);
 
 
-        print(message);
+        stdout.writeln(message);
 
         if (version != "" && message.length >= 9)
         {
@@ -53,7 +54,7 @@ void handleConnection(Socket client)
             if (message.substring(0, 10) == "username: ")
             {
                 String username = message.substring(10);
-                print('User "${username}" joined from ${client.remoteAddress.address} version ${version}');
+                ('User "${username}" joined from ${client.remoteAddress.address} version ${version}');
                 client.write("200");
 
                 //check against usernames that are similar to "server"
@@ -67,17 +68,16 @@ void handleConnection(Socket client)
             if (message.substring(0, 6) == "data: ")
             {
                 client.write("200");
-                print("//debug: username = ${username}");
-                print(data);
+                stdout.writeln(data);
                 data_array.add(["test", "test"]);
-                print(data);
+                stdout.writeln(data);
                 data_array.add([username, message.substring(6)]);
             }
         }
 
         else
         {
-            print('Invalid data received from ${username} @${client.remoteAddress.address}');
+            stdout.writeln('Invalid data received from ${username} @${client.remoteAddress.address}');
             client.write('400');
         }     
 
@@ -90,14 +90,14 @@ void handleConnection(Socket client)
     // handle errors
     onError: (error) 
     {
-      print(error);
+      stdout.writeln(error);
       client.close();
     },
 
     // handle the client closing the connection
     onDone: () 
     {
-      print('Client ${username} disconnected');
+      stdout.writeln('Client ${username} disconnected');
       data_array.add(["server", "#${username} has left the chat"]);
       client.close();
     },
