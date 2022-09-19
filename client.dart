@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'dart:math';
 
 
-int port = 1975;
-String version = "0.1";
-String address = "127.0.0.1"; //temporary
+const port = 1975;
+const version = "0.1";
+const address = "127.0.0.1"; //temporary
 bool error = false;
 
 List<String> servers = ["127.0.0.1", "neostalgia.ddns.net", "thetechclicks.com"];
