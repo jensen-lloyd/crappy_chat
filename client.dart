@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+//import 'dart:typed_data';
 import 'dart:math';
 
 
@@ -14,7 +14,7 @@ List<String> servers = ["127.0.0.1", "neostalgia.ddns.net", "thetechclicks.com"]
 void main() async 
 {
     
-    //String address = servers[Random().nextInt(servers.length-1)];
+////String address = servers[Random().nextInt(servers.length-1)];
 
     // connect to the socket server
     final server = await Socket.connect(address, port);
