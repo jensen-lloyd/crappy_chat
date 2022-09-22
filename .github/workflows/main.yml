@@ -49,8 +49,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
-      - run: mkdir release
-      - run: mkdir ${{ matrix.os }}
+      - run: mkdir release/${{ matrix.os }}
       - run: dart compile exe ${{ matrix.dart-file-name }} -o  release/${{ matrix.os }}/${{ matrix.binary-name }}
       - uses: actions/upload-artifact@v2
         with:
