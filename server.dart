@@ -92,6 +92,7 @@ void handleConnection(Socket client)
     {
       stdout.writeln(error);
       client.close();
+      print(data_array);
     },
 
     // handle the client closing the connection
