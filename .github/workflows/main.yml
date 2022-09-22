@@ -9,27 +9,51 @@ on:
 
 jobs:
   compile:
-    name: dart compile exe
+    name: dart compile exe server
     strategy:
       matrix:
         include:
           - runs-on: ubuntu-latest
-            binary-name: mycli_linux_amd64
+            binary-name: server_linux_amd64
           - runs-on: macos-latest
-            binary-name: mycli_macos_amd64
+            binary-name: server_macos_amd64
           - runs-on: windows-latest
-            binary-name: mycli_windows.exe
+            binary-name: server_windows.exe
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
       - run: mkdir ${{ matrix.runs-on }}
-      - run: dart compile exe bin/mycli.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - run: dart compile exe server.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
       - uses: actions/upload-artifact@v2
         with:
           name: bin-${{ matrix.runs-on }}
           path: ${{ matrix.runs-on }}
+
+
+    name: dart compile exe client
+    strategy:
+      matrix:
+        include:
+          - runs-on: ubuntu-latest
+            binary-name: client_linux_amd64
+          - runs-on: macos-latest
+            binary-name: client_macos_amd64
+          - runs-on: windows-latest
+            binary-name: client_windows.exe
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: mkdir ${{ matrix.runs-on }}
+      - run: dart compile exe client.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: bin-${{ matrix.runs-on }}
+          path: ${{ matrix.runs-on }}
+
 
   release:
     needs: compile
