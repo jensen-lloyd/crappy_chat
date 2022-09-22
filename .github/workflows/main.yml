@@ -16,26 +16,32 @@ jobs:
           - runs-on: ubuntu-latest
             binary-name: server_linux_amd64
             dart-file-name: server.dart
+            os: linux
 
           - runs-on: ubuntu-latest
             binary-name: client_linux_amd64
             dart-file-name: client.dart
+            os: linux
 
           - runs-on: macos-latest
             binary-name: server_macos_amd64
             dart-file-name: server.dart
+            os: macos
 
           - runs-on: macos-latest
             binary-name: client_macos_amd64
             dart-file-name: client.dart
+            os: macos
 
           - runs-on: windows-latest
             binary-name: server_windows.exe
             dart-file-name: server.dart
+            os: windows
 
           - runs-on: windows-latest
             binary-name: client_windows.exe
             dart-file-name: client.dart
+            os: windows
 
 
     runs-on: ${{ matrix.runs-on }}
@@ -48,7 +54,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.binary-name }}
-          path: ${{ matrix.runs-on }}
+          path: ${{ matrix.os }}
 
 
 
@@ -60,16 +66,31 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: bin-ubuntu-latest
-          path: bin-linux
+          name: server_linux_amd64
+          path: linux
       - uses: actions/download-artifact@v2
         with:
-          name: bin-macos-latest
-          path: bin-macos
+            name: client_linux_amd64
+            path: linux
+
       - uses: actions/download-artifact@v2
         with:
-          name: bin-windows-latest
-          path: bin-windows
+          name: server_macos_amd64
+          path: macos
+      - uses: actions/download-artifact@v2
+        with:
+            name: client_macos_amd64
+            path: macos
+
+      - uses: actions/download-artifact@v2
+        with:
+            name: server_windows.exe
+            path: windows
+      - uses: actions/download-artifact@v2
+        with:
+            name: client_windows.exe
+            path: windows
+
       - uses: softprops/action-gh-release@v1
         with:
           draft: true
