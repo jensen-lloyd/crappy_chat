@@ -50,7 +50,7 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
       - run: mkdir ${{ matrix.runs-on }}
-      - run: dart compile exe ${{ matrix.dart-file-name }} -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - run: dart compile exe ${{ matrix.dart-file-name }} -o ${{ matrix.os }}/${{ matrix.binary-name }}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.binary-name }}
