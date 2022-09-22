@@ -14,45 +14,37 @@ jobs:
       matrix:
         include:
           - runs-on: ubuntu-latest
-            binary-name: server_linux_amd64
+            binary-name1: server_linux_amd64
+            binary-name2: client_linux_amd64
+            dart-file-name1: server.dart
+            dart-file-name2: client.dart
+
           - runs-on: macos-latest
-            binary-name: server_macos_amd64
+            binary-name1: server_macos_amd64
+            binary-name2: client_macos_amd64
+            dart-file-name1: server.dart
+            dart-file-name2: client.dart
+
           - runs-on: windows-latest
-            binary-name: server_windows.exe
+            binary-name1: server_windows.exe
+            binary-name2: client_windows.exe
+            dart-file-name1: server.dart
+            dart-file-name2: client.dart
+
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
       - run: mkdir ${{ matrix.runs-on }}
-      - run: dart compile exe server.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
+      - run: dart compile exe ${{ matrix.dart-file-name1 }} -o ${{ matrix.runs-on }}/${{ matrix.binary-name1 }}
+      - run: dart compile exe ${{ matrix.dart-file-name2 }} -o ${{ matrix.runs-on }}/${{ matrix.binary-name2 }}
       - uses: actions/upload-artifact@v2
         with:
           name: bin-${{ matrix.runs-on }}
           path: ${{ matrix.runs-on }}
 
 
-    name: dart compile exe client
-    strategy:
-      matrix:
-        include:
-          - runs-on: ubuntu-latest
-            binary-name: client_linux_amd64
-          - runs-on: macos-latest
-            binary-name: client_macos_amd64
-          - runs-on: windows-latest
-            binary-name: client_windows.exe
-    runs-on: ${{ matrix.runs-on }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-      - run: mkdir ${{ matrix.runs-on }}
-      - run: dart compile exe client.dart -o ${{ matrix.runs-on }}/${{ matrix.binary-name }}
-      - uses: actions/upload-artifact@v2
-        with:
-          name: bin-${{ matrix.runs-on }}
-          path: ${{ matrix.runs-on }}
 
 
   release:
